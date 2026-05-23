@@ -12,63 +12,28 @@
         html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
         body { font-family: 'Cairo', sans-serif; color: #fff; user-select: none; -webkit-user-select: none; touch-action: none; }
         canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: block; z-index: 1; }
-
-        /* Screens */
         .screen { position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 10; transition: opacity 0.4s, transform 0.4s; }
         .screen.hidden { opacity: 0; pointer-events: none; transform: scale(1.1); display: none; }
         .screen.active { opacity: 1; pointer-events: auto; transform: scale(1); display: flex; }
-
-        /* Menu Styling */
         #s-menu { background: radial-gradient(circle at center, #1e1e1e 0%, #0a0a0a 100%); gap: 2.5rem; }
         .logo { font-family: 'Amiri', serif; font-size: clamp(3.5rem, 12vw, 7.5rem); font-weight: 700; color: #FFD700; text-shadow: 0 0 40px rgba(255, 215, 0, 0.4), 2px 2px 10px #000; text-align: center; line-height: 1; }
         .ninja-icon { font-size: 8rem; animation: float 4s ease-in-out infinite; filter: drop-shadow(0 0 30px rgba(255, 215, 0, 0.3)); }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(-2deg); }
-            50% { transform: translateY(-25px) rotate(2deg); }
-        }
-
-        /* Buttons */
-        .btn-gold { 
-            background: linear-gradient(135deg, #FFD700, #FFF9C4, #FFD700); 
-            border: none; color: #000; font-size: 1.8rem; font-weight: 900; 
-            padding: 1.2rem 4rem; border-radius: 60px; cursor: pointer; 
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5), inset 0 2px 5px rgba(255,255,255,0.8);
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
+        @keyframes float { 0%, 100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-25px) rotate(2deg); } }
+        .btn-gold { background: linear-gradient(135deg, #FFD700, #FFF9C4, #FFD700); border: none; color: #000; font-size: 1.8rem; font-weight: 900; padding: 1.2rem 4rem; border-radius: 60px; cursor: pointer; box-shadow: 0 10px 25px rgba(0,0,0,0.5), inset 0 2px 5px rgba(255,255,255,0.8); transition: transform 0.2s, box-shadow 0.2s; }
         .btn-gold:hover { transform: scale(1.08); box-shadow: 0 15px 35px rgba(255, 215, 0, 0.4); }
         .btn-gold:active { transform: scale(0.96); }
-
-        .btn-ghost { 
-            background: rgba(255, 255, 255, 0.05); border: 2px solid rgba(255, 255, 255, 0.2);
-            color: #fff; padding: 1rem 2.5rem; border-radius: 40px; cursor: pointer; font-weight: 700;
-            transition: 0.3s; font-size: 1.2rem;
-        }
+        .btn-ghost { background: rgba(255, 255, 255, 0.05); border: 2px solid rgba(255, 255, 255, 0.2); color: #fff; padding: 1rem 2.5rem; border-radius: 40px; cursor: pointer; font-weight: 700; transition: 0.3s; font-size: 1.2rem; }
         .btn-ghost:hover { background: rgba(255, 255, 255, 0.15); border-color: #fff; }
-
-        /* HUD */
-        #hud { 
-            position: fixed; top: 0; left: 0; right: 0; padding: 2rem; 
-            display: flex; justify-content: space-between; align-items: center; z-index: 20; 
-            pointer-events: none;
-        }
+        #hud { position: fixed; top: 0; left: 0; right: 0; padding: 2rem; display: flex; justify-content: space-between; align-items: center; z-index: 20; pointer-events: none; }
         .hearts { display: flex; gap: 1rem; pointer-events: auto; }
         .heart { font-size: 3.5rem; filter: drop-shadow(0 0 15px red); transition: 0.5s; }
         .heart.lost { opacity: 0.1; transform: scale(0.6) rotate(-45deg); filter: grayscale(1); }
         .progress-val { font-size: 3rem; font-weight: 900; color: #FFD700; text-shadow: 0 0 20px rgba(0,0,0,0.9); font-family: 'Cairo', sans-serif; }
-
-        /* Feedback */
         #flash { position: fixed; inset: 0; background: rgba(255,0,0,0.4); opacity: 0; pointer-events: none; transition: opacity 0.1s; z-index: 5; }
-        
-        /* Results */
         .result-box { background: rgba(10,10,10,0.98); border: 5px solid #FFD700; border-radius: 50px; padding: 5rem; text-align: center; box-shadow: 0 0 100px rgba(0,0,0,1); position: relative; overflow: hidden; }
         .result-title { font-size: 5rem; font-weight: 900; margin-bottom: 2rem; }
-
-        /* Victory Graphics */
         .confetti { position: absolute; width: 10px; height: 10px; background: #FFD700; animation: fall 3s linear infinite; }
-        @keyframes fall {
-            to { transform: translateY(100vh) rotate(360deg); }
-        }
+        @keyframes fall { to { transform: translateY(100vh) rotate(360deg); } }
     </style>
 </head>
 <body>
@@ -76,14 +41,12 @@
     <canvas id="gameCanvas"></canvas>
     <div id="flash"></div>
 
-    <!-- Screen: Menu -->
     <div id="s-menu" class="screen active">
         <div class="ninja-icon">🥷</div>
         <h1 class="logo">Arabic Ninja</h1>
         <button class="btn-gold" id="btn-play">▶ Start Mission</button>
     </div>
 
-    <!-- Screen: Mode Selection -->
     <div id="s-mode" class="screen hidden">
         <h2 style="font-size: 3.5rem; margin-bottom: 3rem;">Select Challenge</h2>
         <div style="display: flex; gap: 3rem; flex-wrap: wrap; justify-content: center;">
@@ -93,7 +56,6 @@
         <button class="btn-ghost" style="margin-top: 4rem;" id="btn-back-menu">← Back to Menu</button>
     </div>
 
-    <!-- Screen: Game Over -->
     <div id="s-over" class="screen hidden">
         <div class="result-box">
             <div class="result-title" style="color: #ff4444;">MISSION FAILED</div>
@@ -105,7 +67,6 @@
         </div>
     </div>
 
-    <!-- Screen: Victory -->
     <div id="s-win" class="screen hidden">
         <div class="result-box" id="victory-box">
             <div class="result-title" style="color: #FFD700;">VICTORY! 👑</div>
@@ -117,7 +78,6 @@
         </div>
     </div>
 
-    <!-- HUD -->
     <div id="hud" style="display: none;">
         <div class="hearts">
             <span class="heart" id="h1">❤️</span>
@@ -129,49 +89,32 @@
     </div>
 
     <script>
-        // RELATIVE PATHS FOR WEB HOSTING
+        // CONFIG
         const VOCAL_PATH = "abcVocals/";
         const TRIMMED_PATH = "abcVocals/trimmed/";
-        const MENU_SONG_PATH = VOCAL_PATH + "abc song.mp3";
-        const SLICE_SOUND_PATH = VOCAL_PATH + "666herohero-slash-21834.mp3";
-
-        // Palette
+        const MENU_SONG_PATH = encodeURI(VOCAL_PATH + "abc song.mp3");
+        const SLICE_SOUND_PATH = encodeURI(VOCAL_PATH + "666herohero-slash-21834.mp3");
         const PALETTE = ["#F3E5F5", "#E1F5FE", "#E8F5E9", "#FFF9C4", "#F1DDCF"];
 
-        // Sound Mapping (Comprehensive for all variations)
-        const SOUNDS = {
-            'أ': VOCAL_PATH + 'ءا.m4a', 'ب': VOCAL_PATH + 'ب.m4a', 'ت': VOCAL_PATH + 'تا.m4a', 'ث': VOCAL_PATH + 'ثا.m4a', 'ج': VOCAL_PATH + 'جا.m4a', 
-            'ح': VOCAL_PATH + 'حا.m4a', 'خ': VOCAL_PATH + 'خا.m4a', 'د': VOCAL_PATH + 'دا.m4a', 'ذ': VOCAL_PATH + 'ذا.m4a', 'ر': VOCAL_PATH + 'را.m4a', 
-            'ز': VOCAL_PATH + 'زا.m4a', 'س': VOCAL_PATH + 'س.m4a', 'ش': VOCAL_PATH + 'شا.m4a', 'ص': VOCAL_PATH + 'صا.m4a', 'ض': VOCAL_PATH + 'ضا.m4a', 
-            'ط': VOCAL_PATH + 'طا.m4a', 'ظ': VOCAL_PATH + 'ظا.m4a', 'ع': VOCAL_PATH + 'عا.m4a', 'غ': VOCAL_PATH + 'غا.m4a', 'ف': TRIMMED_PATH + 'فا.m4a', 
-            'ق': VOCAL_PATH + 'ققا.m4a', 'ك': VOCAL_PATH + 'كا.m4a', 'ل': TRIMMED_PATH + 'لَ.m4a', 'م': VOCAL_PATH + 'ما.m4a', 'ن': VOCAL_PATH + 'نا.m4a', 
-            'ه': VOCAL_PATH + 'ها.m4a', 'و': VOCAL_PATH + 'وا.m4a', 'ي': VOCAL_PATH + 'ي.m4a', 'ة': VOCAL_PATH + 'تا.m4a', 'ء': VOCAL_PATH + 'ءا.m4a', 
-            'ئ': VOCAL_PATH + 'ءي.m4a', 
-            
-            // Typographic tails (Tatweel)
-            'بـ': VOCAL_PATH + 'ب.m4a', 'تـ': VOCAL_PATH + 'تا.m4a', 'ثـ': VOCAL_PATH + 'ثا.m4a', 'يـ': VOCAL_PATH + 'ي.m4a', 'نـ': VOCAL_PATH + 'نا.m4a', 'ئـ': VOCAL_PATH + 'ءي.m4a', 
-            'عــ': VOCAL_PATH + 'عا.m4a', 'غــ': VOCAL_PATH + 'غا.m4a', 'ــعــ': VOCAL_PATH + 'عا.m4a', 'ــغــ': VOCAL_PATH + 'غا.m4a', 'ــع': VOCAL_PATH + 'عا.m4a', 'ــغ': VOCAL_PATH + 'غا.m4a', 
-            'فـ': TRIMMED_PATH + 'فا.m4a', 'قـ': VOCAL_PATH + 'ققا.m4a', 'فــ': TRIMMED_PATH + 'فا.m4a', 'قــ': VOCAL_PATH + 'ققا.m4a', 'ــفــ': TRIMMED_PATH + 'فا.m4a', 'ــقــ': VOCAL_PATH + 'ققا.m4a',
-            'ـفـ': TRIMMED_PATH + 'فا.m4a', 'ـقـ': VOCAL_PATH + 'ققا.m4a', 'ـق': VOCAL_PATH + 'ققا.m4a', 'ـة': VOCAL_PATH + 'تا.m4a', 'ـه': VOCAL_PATH + 'ها.m4a', 'ـلـ': TRIMMED_PATH + 'لَ.m4a', 'ـا': TRIMMED_PATH + 'Alif.m4a', 'ــمـ': VOCAL_PATH + 'ما.m4a', 'ــهــ': VOCAL_PATH + 'ها.m4a'
+        // Sound Mapping (Encoded for Web)
+        const SOUND_MAP = {
+            'أ': 'ءا.m4a', 'ب': 'ب.m4a', 'ت': 'تا.m4a', 'ث': 'ثا.m4a', 'ج': 'جا.m4a', 'ح': 'حا.m4a', 'خ': 'خا.m4a', 'د': 'دا.m4a', 'ذ': 'ذا.m4a', 'ر': 'را.m4a', 'ز': 'زا.m4a', 'س': 'س.m4a', 'ش': 'شا.m4a', 'ص': 'صا.m4a', 'ض': 'ضا.m4a', 'ط': 'طا.m4a', 'ظ': 'ظا.m4a', 'ع': 'عا.m4a', 'غ': 'غا.m4a', 'ف': 'trimmed/فا.m4a', 'ق': 'ققا.m4a', 'ك': 'كا.m4a', 'ل': 'trimmed/لَ.m4a', 'م': 'ما.m4a', 'ن': 'نا.m4a', 'ه': 'ها.m4a', 'و': 'وا.m4a', 'ي': 'ي.m4a', 'ة': 'تا.m4a', 'ء': 'ءا.m4a', 'ئ': 'ءي.m4a', 'بـ': 'ب.m4a', 'تـ': 'تا.m4a', 'ثـ': 'ثا.m4a', 'يـ': 'ي.m4a', 'نـ': 'نا.m4a', 'ئـ': 'ءي.m4a', 'عــ': 'عا.m4a', 'غــ': 'غا.m4a', 'ــعــ': 'عا.m4a', 'ــغــ': 'غا.m4a', 'ــع': 'عا.m4a', 'ــغ': 'غا.m4a', 'فـ': 'trimmed/فا.m4a', 'قـ': 'ققا.m4a', 'فــ': 'trimmed/فا.m4a', 'قــ': 'ققا.m4a', 'ــفــ': 'trimmed/فا.m4a', 'ــقــ': 'ققا.m4a', 'ـفـ': 'trimmed/فا.m4a', 'ـقـ': 'ققا.m4a', 'ـق': 'ققا.m4a', 'ـة': 'تا.m4a', 'ـه': 'ها.m4a', 'ـلـ': 'trimmed/لَ.m4a', 'ـا': 'trimmed/Alif.m4a', 'ــمـ': 'ما.m4a', 'ــهــ': 'ها.m4a'
         };
 
+        // GROUPS
         const GROUPS_ORTHO = [
             { items: ['بـ', 'تـ', 'ثـ', 'يـ', 'نـ', 'ئـ'] }, { items: ['ج', 'ح', 'خ'] }, { items: ['د', 'ذ'] }, { items: ['ر', 'ز'] }, { items: ['س', 'ش'] }, { items: ['ص', 'ض'] }, { items: ['ط', 'ظ'] }, { items: ['ع', 'غ'] }, { items: ['ــعــ', 'ــغــ'] }, { items: ['ــع', 'ــغ'] }, { items: ['ف', 'ق'] }, { items: ['ــفــ', 'ــقــ'] }, { items: ['ـق', 'ـة'] }, { items: ['ـه', 'ـة'] }, { items: ['ـلـ', 'ـا'] }, { items: ['د', 'ذ', 'ر', 'ز'] }, { items: ['عــ', 'ء'] }, { items: ['ــمـ', 'ــهــ'] }
         ];
-
         const GROUPS_PHONE = [
             { items: ['ت', 'ط'] }, { items: ['س', 'ص'] }, { items: ['ع', 'ء'] }, { items: ['د', 'ض'] }, { items: ['ظ', 'ذ'] }, { items: ['ك', 'ج'] }, { items: ['ث', 'ذ'] }, { items: ['م', 'ن'] }
         ];
 
-        // Canvas Setup
-        const canvas = document.getElementById('gameCanvas');
-        const ctx = canvas.getContext('2d');
+        // ENGINE
+        const canvas = document.getElementById('gameCanvas'), ctx = canvas.getContext('2d');
         let width, height;
         function resize() { width = window.innerWidth; height = window.innerHeight; canvas.width = width; canvas.height = height; }
-        window.addEventListener('resize', resize);
-        resize();
+        window.addEventListener('resize', resize); resize();
 
-        // Game Core
         let gameState = 'menu', currentMode = 'ortho', challenges = [], currentChallengeIndex = 0, lives = 3, fruits = [], particles = [], trails = [], splitFruits = [], splashes = [], score = 0, isDrawing = false, lastPos = null;
         let menuMusic = null, sliceSound = null, audioContext = null;
 
@@ -182,11 +125,23 @@
             sliceSound = new Audio(SLICE_SOUND_PATH);
         }
 
+        // BRUTE FORCE MOBILE UNLOCK
         function unlockAudio() {
             initAudio();
             if (audioContext.state === 'suspended') audioContext.resume();
-            const b = audioContext.createBuffer(1, 1, 22050), s = audioContext.createBufferSource();
-            s.buffer = b; s.connect(audioContext.destination); s.start(0);
+            
+            // Interaction: Play/Pause once to "prime" the elements
+            [menuMusic, sliceSound].forEach(a => {
+                if(a) { a.play().then(() => a.pause()).catch(() => {}); }
+            });
+        }
+
+        async function playSound(key) {
+            const file = SOUND_MAP[key];
+            if (!file) return;
+            const fullPath = encodeURI(VOCAL_PATH + file);
+            const audio = new Audio(fullPath);
+            return audio.play().catch(e => console.warn("Audio fail:", fullPath));
         }
 
         class Fruit {
@@ -196,10 +151,7 @@
                 this.rotation = (Math.random() - 0.5) * 0.5; this.vRotation = (Math.random() - 0.5) * 0.04;
                 this.isTarget = false; this.sliced = false; this.gravity = 0.22;
             }
-            update() {
-                this.x += this.vx; this.y += this.vy; this.vy += this.gravity;
-                this.rotation += this.vRotation; if (Math.abs(this.rotation) > 0.8) this.vRotation *= -1;
-            }
+            update() { this.x += this.vx; this.y += this.vy; this.vy += this.gravity; this.rotation += this.vRotation; if (Math.abs(this.rotation) > 0.8) this.vRotation *= -1; }
             draw() {
                 ctx.save(); ctx.translate(this.x, this.y); ctx.rotate(this.rotation);
                 ctx.fillStyle = 'rgba(0,0,0,0.4)'; ctx.beginPath(); ctx.ellipse(0, this.radius * 0.15, this.radius, this.radius * 0.9, 0, 0, Math.PI * 2); ctx.fill();
@@ -258,20 +210,17 @@
             if (gameState !== 'playing') return;
             if (currentChallengeIndex >= challenges.length) { winGame(); return; }
             const ch = challenges[currentChallengeIndex];
-            const fullPath = SOUNDS[ch.target];
-            if (fullPath) {
-                const audio = new Audio(fullPath);
-                audio.play().catch(e => console.error("Audio Error:", e, "Path:", fullPath));
-            }
+            
+            // Sound-First Logic
+            await playSound(ch.target);
+
             setTimeout(() => {
                 if (gameState !== 'playing') return;
                 fruits = [];
                 let c1Idx = Math.floor(Math.random() * PALETTE.length), c2Idx = (c1Idx + 1 + Math.floor(Math.random() * (PALETTE.length - 1))) % PALETTE.length;
                 const isTargetLeft = Math.random() > 0.5;
                 const createFruit = (text, isLeft, color) => {
-                    const x = isLeft ? width * 0.25 : width * 0.75;
-                    const vx = isLeft ? (Math.random() * 1 + 0.5) : -(Math.random() * 1 + 0.5);
-                    const vy = -(height * 0.026 + Math.random() * 4); 
+                    const x = isLeft ? width * 0.25 : width * 0.75, vx = isLeft ? (Math.random() * 1 + 0.5) : -(Math.random() * 1 + 0.5), vy = -(height * 0.026 + Math.random() * 4); 
                     return new Fruit(text, x, height + 150, vx, vy, color);
                 };
                 const f1 = createFruit(ch.target, isTargetLeft, PALETTE[c1Idx]); f1.isTarget = true;
