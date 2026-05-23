@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        html, body { width: 100%; height: 100%; overflow: hidden; background: #0a0a0a; }
+        html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
         body { font-family: 'Cairo', sans-serif; color: #fff; user-select: none; -webkit-user-select: none; touch-action: none; }
         canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: block; z-index: 1; }
 
@@ -138,7 +138,7 @@
         // Palette
         const PALETTE = ["#F3E5F5", "#E1F5FE", "#E8F5E9", "#FFF9C4", "#F1DDCF"];
 
-        // Sound Mapping
+        // Sound Mapping (Comprehensive for all variations)
         const SOUNDS = {
             'أ': VOCAL_PATH + 'ءا.m4a', 'ب': VOCAL_PATH + 'ب.m4a', 'ت': VOCAL_PATH + 'تا.m4a', 'ث': VOCAL_PATH + 'ثا.m4a', 'ج': VOCAL_PATH + 'جا.m4a', 
             'ح': VOCAL_PATH + 'حا.m4a', 'خ': VOCAL_PATH + 'خا.m4a', 'د': VOCAL_PATH + 'دا.m4a', 'ذ': VOCAL_PATH + 'ذا.m4a', 'ر': VOCAL_PATH + 'را.m4a', 
@@ -146,188 +146,96 @@
             'ط': VOCAL_PATH + 'طا.m4a', 'ظ': VOCAL_PATH + 'ظا.m4a', 'ع': VOCAL_PATH + 'عا.m4a', 'غ': VOCAL_PATH + 'غا.m4a', 'ف': TRIMMED_PATH + 'فا.m4a', 
             'ق': VOCAL_PATH + 'ققا.m4a', 'ك': VOCAL_PATH + 'كا.m4a', 'ل': TRIMMED_PATH + 'لَ.m4a', 'م': VOCAL_PATH + 'ما.m4a', 'ن': VOCAL_PATH + 'نا.m4a', 
             'ه': VOCAL_PATH + 'ها.m4a', 'و': VOCAL_PATH + 'وا.m4a', 'ي': VOCAL_PATH + 'ي.m4a', 'ة': VOCAL_PATH + 'تا.m4a', 'ء': VOCAL_PATH + 'ءا.m4a', 
-            'ئ': VOCAL_PATH + 'ءي.m4a', 'بـ': VOCAL_PATH + 'ب.m4a', 'تـ': VOCAL_PATH + 'تا.m4a', 'ثـ': VOCAL_PATH + 'ثا.m4a', 'يـ': VOCAL_PATH + 'ي.m4a',
-            'نـ': VOCAL_PATH + 'نا.m4a', 'ئـ': VOCAL_PATH + 'ءي.m4a', 'عــ': VOCAL_PATH + 'عا.m4a', 'غــ': VOCAL_PATH + 'غا.m4a', 'ــعــ': VOCAL_PATH + 'عا.m4a',
-            'ــغــ': VOCAL_PATH + 'غا.m4a', 'ــع': VOCAL_PATH + 'عا.m4a', 'ــغ': VOCAL_PATH + 'غا.m4a', 'فــ': TRIMMED_PATH + 'فا.m4a', 'قــ': VOCAL_PATH + 'ققا.m4a',
-            'ــفــ': TRIMMED_PATH + 'فا.m4a', 'ــقــ': VOCAL_PATH + 'ققا.m4a', 'ـق': VOCAL_PATH + 'ققا.m4a', 'ـة': VOCAL_PATH + 'تا.m4a', 'ـه': VOCAL_PATH + 'ها.m4a',
-            'ـلـ': TRIMMED_PATH + 'لَ.m4a', 'ـا': TRIMMED_PATH + 'Alif.m4a', 'ــمـ': VOCAL_PATH + 'ما.m4a', 'ــهــ': VOCAL_PATH + 'ها.m4a', 'فـ': TRIMMED_PATH + 'فا.m4a', 'قـ': VOCAL_PATH + 'ققا.m4a'
+            'ئ': VOCAL_PATH + 'ءي.m4a', 
+            
+            // Typographic tails (Tatweel)
+            'بـ': VOCAL_PATH + 'ب.m4a', 'تـ': VOCAL_PATH + 'تا.m4a', 'ثـ': VOCAL_PATH + 'ثا.m4a', 'يـ': VOCAL_PATH + 'ي.m4a', 'نـ': VOCAL_PATH + 'نا.m4a', 'ئـ': VOCAL_PATH + 'ءي.m4a', 
+            'عــ': VOCAL_PATH + 'عا.m4a', 'غــ': VOCAL_PATH + 'غا.m4a', 'ــعــ': VOCAL_PATH + 'عا.m4a', 'ــغــ': VOCAL_PATH + 'غا.m4a', 'ــع': VOCAL_PATH + 'عا.m4a', 'ــغ': VOCAL_PATH + 'غا.m4a', 
+            'فـ': TRIMMED_PATH + 'فا.m4a', 'قـ': VOCAL_PATH + 'ققا.m4a', 'فــ': TRIMMED_PATH + 'فا.m4a', 'قــ': VOCAL_PATH + 'ققا.m4a', 'ــفــ': TRIMMED_PATH + 'فا.m4a', 'ــقــ': VOCAL_PATH + 'ققا.m4a',
+            'ـفـ': TRIMMED_PATH + 'فا.m4a', 'ـقـ': VOCAL_PATH + 'ققا.m4a', 'ـق': VOCAL_PATH + 'ققا.m4a', 'ـة': VOCAL_PATH + 'تا.m4a', 'ـه': VOCAL_PATH + 'ها.m4a', 'ـلـ': TRIMMED_PATH + 'لَ.m4a', 'ـا': TRIMMED_PATH + 'Alif.m4a', 'ــمـ': VOCAL_PATH + 'ما.m4a', 'ــهــ': VOCAL_PATH + 'ها.m4a'
         };
 
         const GROUPS_ORTHO = [
-            { items: ['بـ', 'تـ', 'ثـ', 'يـ', 'نـ', 'ئـ'] },
-            { items: ['ج', 'ح', 'خ'] },
-            { items: ['د', 'ذ'] },
-            { items: ['ر', 'ز'] },
-            { items: ['س', 'ش'] },
-            { items: ['ص', 'ض'] },
-            { items: ['ط', 'ظ'] },
-            { items: ['ع', 'غ'] },
-            { items: ['ــعــ', 'ــغــ'] },
-            { items: ['ــع', 'ــغ'] },
-            { items: ['ف', 'ق'] },
-            { items: ['ــفــ', 'ــقــ'] },
-            { items: ['ـق', 'ـة'] },
-            { items: ['ـه', 'ـة'] },
-            { items: ['ـلـ', 'ـا'] },
-            { items: ['د', 'ذ', 'ر', 'ز'] },
-            { items: ['عــ', 'ء'] },
-            { items: ['ــمـ', 'ــهــ'] }
+            { items: ['بـ', 'تـ', 'ثـ', 'يـ', 'نـ', 'ئـ'] }, { items: ['ج', 'ح', 'خ'] }, { items: ['د', 'ذ'] }, { items: ['ر', 'ز'] }, { items: ['س', 'ش'] }, { items: ['ص', 'ض'] }, { items: ['ط', 'ظ'] }, { items: ['ع', 'غ'] }, { items: ['ــعــ', 'ــغــ'] }, { items: ['ــع', 'ــغ'] }, { items: ['ف', 'ق'] }, { items: ['ــفــ', 'ــقــ'] }, { items: ['ـق', 'ـة'] }, { items: ['ـه', 'ـة'] }, { items: ['ـلـ', 'ـا'] }, { items: ['د', 'ذ', 'ر', 'ز'] }, { items: ['عــ', 'ء'] }, { items: ['ــمـ', 'ــهــ'] }
         ];
 
         const GROUPS_PHONE = [
-            { items: ['ت', 'ط'] },
-            { items: ['س', 'ص'] },
-            { items: ['ع', 'ء'] },
-            { items: ['د', 'ض'] },
-            { items: ['ظ', 'ذ'] },
-            { items: ['ك', 'ج'] },
-            { items: ['ث', 'ذ'] },
-            { items: ['م', 'ن'] }
+            { items: ['ت', 'ط'] }, { items: ['س', 'ص'] }, { items: ['ع', 'ء'] }, { items: ['د', 'ض'] }, { items: ['ظ', 'ذ'] }, { items: ['ك', 'ج'] }, { items: ['ث', 'ذ'] }, { items: ['م', 'ن'] }
         ];
 
         // Canvas Setup
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
         let width, height;
-
-        function resize() {
-            width = window.innerWidth;
-            height = window.innerHeight;
-            canvas.width = width;
-            canvas.height = height;
-        }
+        function resize() { width = window.innerWidth; height = window.innerHeight; canvas.width = width; canvas.height = height; }
         window.addEventListener('resize', resize);
         resize();
 
         // Game Core
-        let gameState = 'menu';
-        let currentMode = 'ortho';
-        let challenges = [];
-        let currentChallengeIndex = 0;
-        let lives = 3;
-        let fruits = [];
-        let particles = [];
-        let trails = [];
-        let splitFruits = [];
-        let splashes = [];
-        let score = 0;
-        let isDrawing = false;
-        let lastPos = null;
-        
-        // AUDIO HANDLING
-        let menuMusic = null;
-        let sliceSound = null;
-        let audioContext = null;
+        let gameState = 'menu', currentMode = 'ortho', challenges = [], currentChallengeIndex = 0, lives = 3, fruits = [], particles = [], trails = [], splitFruits = [], splashes = [], score = 0, isDrawing = false, lastPos = null;
+        let menuMusic = null, sliceSound = null, audioContext = null;
 
         function initAudio() {
             if (audioContext) return;
             audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            menuMusic = new Audio(MENU_SONG_PATH);
-            menuMusic.loop = true;
+            menuMusic = new Audio(MENU_SONG_PATH); menuMusic.loop = true;
             sliceSound = new Audio(SLICE_SOUND_PATH);
         }
 
-        // Mobile Audio Unlock
         function unlockAudio() {
             initAudio();
-            if (audioContext.state === 'suspended') {
-                audioContext.resume();
-            }
-            // Play silent buffer to unlock
-            const buffer = audioContext.createBuffer(1, 1, 22050);
-            const source = audioContext.createBufferSource();
-            source.buffer = buffer;
-            source.connect(audioContext.destination);
-            source.start(0);
+            if (audioContext.state === 'suspended') audioContext.resume();
+            const b = audioContext.createBuffer(1, 1, 22050), s = audioContext.createBufferSource();
+            s.buffer = b; s.connect(audioContext.destination); s.start(0);
         }
 
         class Fruit {
             constructor(text, x, y, vx, vy, color) {
-                this.text = text;
-                this.x = x;
-                this.y = y;
-                this.vx = vx;
-                this.vy = vy;
-                this.color = color;
+                this.text = text; this.x = x; this.y = y; this.vx = vx; this.vy = vy; this.color = color;
                 this.radius = Math.min(width, height) * 0.12; 
-                this.rotation = (Math.random() - 0.5) * 0.5;
-                this.vRotation = (Math.random() - 0.5) * 0.04;
-                this.isTarget = false;
-                this.sliced = false;
-                this.gravity = 0.22;
+                this.rotation = (Math.random() - 0.5) * 0.5; this.vRotation = (Math.random() - 0.5) * 0.04;
+                this.isTarget = false; this.sliced = false; this.gravity = 0.22;
             }
             update() {
-                this.x += this.vx;
-                this.y += this.vy;
-                this.vy += this.gravity;
-                this.rotation += this.vRotation;
-                if (Math.abs(this.rotation) > 0.8) this.vRotation *= -1;
+                this.x += this.vx; this.y += this.vy; this.vy += this.gravity;
+                this.rotation += this.vRotation; if (Math.abs(this.rotation) > 0.8) this.vRotation *= -1;
             }
             draw() {
-                ctx.save();
-                ctx.translate(this.x, this.y);
-                ctx.rotate(this.rotation);
-                ctx.fillStyle = 'rgba(0,0,0,0.4)';
-                ctx.beginPath();
-                ctx.ellipse(0, this.radius * 0.15, this.radius, this.radius * 0.9, 0, 0, Math.PI * 2);
-                ctx.fill();
+                ctx.save(); ctx.translate(this.x, this.y); ctx.rotate(this.rotation);
+                ctx.fillStyle = 'rgba(0,0,0,0.4)'; ctx.beginPath(); ctx.ellipse(0, this.radius * 0.15, this.radius, this.radius * 0.9, 0, 0, Math.PI * 2); ctx.fill();
                 const grad = ctx.createRadialGradient(-this.radius * 0.3, -this.radius * 0.3, 0, 0, 0, this.radius);
-                grad.addColorStop(0, '#fff');
-                grad.addColorStop(0.2, this.color);
-                grad.addColorStop(1, this.color);
-                ctx.fillStyle = grad;
-                ctx.beginPath(); ctx.arc(0, 0, this.radius, 0, Math.PI * 2); ctx.fill();
-                ctx.fillStyle = 'rgba(255,255,255,0.4)';
-                ctx.beginPath(); ctx.ellipse(-this.radius*0.4, -this.radius*0.4, this.radius*0.3, this.radius*0.15, Math.PI/4, 0, Math.PI*2); ctx.fill();
-                ctx.fillStyle = '#000';
-                ctx.font = `bold ${this.radius * 1.1}px 'Amiri', serif`;
-                ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-                ctx.strokeStyle = 'rgba(255,255,255,0.3)'; ctx.lineWidth = 2;
-                ctx.strokeText(this.text, 0, 0); ctx.fillText(this.text, 0, 0);
-                ctx.restore();
+                grad.addColorStop(0, '#fff'); grad.addColorStop(0.2, this.color); grad.addColorStop(1, this.color);
+                ctx.fillStyle = grad; ctx.beginPath(); ctx.arc(0, 0, this.radius, 0, Math.PI * 2); ctx.fill();
+                ctx.fillStyle = 'rgba(255,255,255,0.4)'; ctx.beginPath(); ctx.ellipse(-this.radius*0.4, -this.radius*0.4, this.radius*0.3, this.radius*0.15, Math.PI/4, 0, Math.PI*2); ctx.fill();
+                ctx.fillStyle = '#000'; ctx.font = `bold ${this.radius * 1.1}px 'Amiri', serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+                ctx.strokeStyle = 'rgba(255,255,255,0.3)'; ctx.lineWidth = 2; ctx.strokeText(this.text, 0, 0); ctx.fillText(this.text, 0, 0); ctx.restore();
             }
         }
 
         class SplitFruit {
             constructor(text, x, y, vx, vy, rotation, color, side) {
-                this.text = text; this.x = x; this.y = y; this.vx = vx; this.vy = vy;
-                this.rotation = rotation; this.color = color; this.side = side;
-                this.vRotation = (Math.random() - 0.5) * 0.2;
-                this.radius = Math.min(width, height) * 0.12;
-                this.alpha = 1;
+                this.text = text; this.x = x; this.y = y; this.vx = vx; this.vy = vy; this.rotation = rotation; this.color = color; this.side = side;
+                this.vRotation = (Math.random() - 0.5) * 0.2; this.radius = Math.min(width, height) * 0.12; this.alpha = 1;
             }
             update() { this.x += this.vx; this.y += this.vy; this.vy += 0.3; this.rotation += this.vRotation; this.alpha -= 0.02; }
             draw() {
                 ctx.save(); ctx.globalAlpha = this.alpha; ctx.translate(this.x, this.y); ctx.rotate(this.rotation);
-                ctx.beginPath();
-                if (this.side === -1) ctx.rect(-this.radius, -this.radius, this.radius, this.radius * 2);
-                else ctx.rect(0, -this.radius, this.radius, this.radius * 2);
-                ctx.clip();
-                ctx.fillStyle = this.color;
-                ctx.beginPath(); ctx.arc(0, 0, this.radius, 0, Math.PI * 2); ctx.fill();
-                ctx.fillStyle = '#000'; ctx.font = `bold ${this.radius * 1.1}px 'Amiri', serif`;
-                ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(this.text, 0, 0);
-                ctx.restore();
+                ctx.beginPath(); if (this.side === -1) ctx.rect(-this.radius, -this.radius, this.radius, this.radius * 2); else ctx.rect(0, -this.radius, this.radius, this.radius * 2); ctx.clip();
+                ctx.fillStyle = this.color; ctx.beginPath(); ctx.arc(0, 0, this.radius, 0, Math.PI * 2); ctx.fill();
+                ctx.fillStyle = '#000'; ctx.font = `bold ${this.radius * 1.1}px 'Amiri', serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(this.text, 0, 0); ctx.restore();
             }
         }
 
         class Splash {
-            constructor(x, y, color) {
-                this.x = x; this.y = y; this.color = color;
-                this.radius = Math.random() * 80 + 40;
-                this.alpha = 0.8; this.scale = 0.5;
-            }
+            constructor(x, y, color) { this.x = x; this.y = y; this.color = color; this.radius = Math.random() * 80 + 40; this.alpha = 0.8; this.scale = 0.5; }
             update() { this.scale += 0.05; this.alpha -= 0.03; }
             draw() { ctx.save(); ctx.globalAlpha = this.alpha; ctx.fillStyle = this.color; ctx.beginPath(); ctx.arc(this.x, this.y, this.radius * this.scale, 0, Math.PI * 2); ctx.fill(); ctx.restore(); }
         }
 
         class Particle {
             constructor(x, y, color) {
-                this.x = x; this.y = y; this.color = color;
-                const ang = Math.random() * Math.PI * 2;
-                const spd = Math.random() * 12 + 4;
-                this.vx = Math.cos(ang) * spd; this.vy = Math.sin(ang) * spd;
-                this.size = Math.random() * 10 + 5; this.alpha = 1;
+                this.x = x; this.y = y; this.color = color; const ang = Math.random() * Math.PI * 2, spd = Math.random() * 12 + 4;
+                this.vx = Math.cos(ang) * spd; this.vy = Math.sin(ang) * spd; this.size = Math.random() * 10 + 5; this.alpha = 1;
             }
             update() { this.x += this.vx; this.y += this.vy; this.vy += 0.25; this.alpha -= 0.03; }
             draw() { ctx.save(); ctx.globalAlpha = this.alpha; ctx.fillStyle = this.color; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI*2); ctx.fill(); ctx.restore(); }
@@ -339,10 +247,7 @@
             groups.forEach(g => {
                 const items = g.items;
                 for (let i = 0; i < items.length; i++) {
-                    for (let j = 0; j < items.length; j++) {
-                        if (i === j) continue;
-                        challenges.push({ target: items[i], distractor: items[j] });
-                    }
+                    for (let j = 0; j < items.length; j++) { if (i === j) continue; challenges.push({ target: items[i], distractor: items[j] }); }
                 }
             });
             challenges.sort(() => Math.random() - 0.5);
@@ -352,25 +257,16 @@
         async function spawnWave() {
             if (gameState !== 'playing') return;
             if (currentChallengeIndex >= challenges.length) { winGame(); return; }
-
             const ch = challenges[currentChallengeIndex];
             const fullPath = SOUNDS[ch.target];
-            const audio = new Audio(fullPath);
-            
-            // Resilience: Continue game even if sound fails
-            let soundPlayed = false;
-            audio.play().then(() => { soundPlayed = true; }).catch(e => {
-                console.error("Audio Load Error:", e, "Path:", fullPath);
-            });
-
-            // Wait 1 Second before launching fruits
+            if (fullPath) {
+                const audio = new Audio(fullPath);
+                audio.play().catch(e => console.error("Audio Error:", e, "Path:", fullPath));
+            }
             setTimeout(() => {
                 if (gameState !== 'playing') return;
                 fruits = [];
-                let c1Idx = Math.floor(Math.random() * PALETTE.length);
-                let c2Idx = (c1Idx + 1 + Math.floor(Math.random() * (PALETTE.length - 1))) % PALETTE.length;
-                const color1 = PALETTE[c1Idx];
-                const color2 = PALETTE[c2Idx];
+                let c1Idx = Math.floor(Math.random() * PALETTE.length), c2Idx = (c1Idx + 1 + Math.floor(Math.random() * (PALETTE.length - 1))) % PALETTE.length;
                 const isTargetLeft = Math.random() > 0.5;
                 const createFruit = (text, isLeft, color) => {
                     const x = isLeft ? width * 0.25 : width * 0.75;
@@ -378,43 +274,27 @@
                     const vy = -(height * 0.026 + Math.random() * 4); 
                     return new Fruit(text, x, height + 150, vx, vy, color);
                 };
-                const f1 = createFruit(ch.target, isTargetLeft, color1); f1.isTarget = true;
-                const f2 = createFruit(ch.distractor, !isTargetLeft, color2);
+                const f1 = createFruit(ch.target, isTargetLeft, PALETTE[c1Idx]); f1.isTarget = true;
+                const f2 = createFruit(ch.distractor, !isTargetLeft, PALETTE[c2Idx]);
                 fruits.push(f1, f2);
             }, 1000);
         }
 
         function sliceFruit(fruit) {
-            if (fruit.sliced) return;
-            fruit.sliced = true;
+            if (fruit.sliced) return; fruit.sliced = true;
             if (sliceSound) { sliceSound.currentTime = 0; sliceSound.play().catch(()=>{}); }
             splashes.push(new Splash(fruit.x, fruit.y, fruit.color));
             splitFruits.push(new SplitFruit(fruit.text, fruit.x, fruit.y, fruit.vx - 4, fruit.vy, fruit.rotation, fruit.color, -1));
             splitFruits.push(new SplitFruit(fruit.text, fruit.x, fruit.y, fruit.vx + 4, fruit.vy, fruit.rotation, fruit.color, 1));
             for (let i = 0; i < 25; i++) particles.push(new Particle(fruit.x, fruit.y, fruit.color));
-            if (fruit.isTarget) {
-                score++; currentChallengeIndex++; updateHUD();
-                setTimeout(spawnWave, 1200);
-            } else {
-                loseLife();
-            }
+            if (fruit.isTarget) { score++; currentChallengeIndex++; updateHUD(); setTimeout(spawnWave, 1200); } else { loseLife(); }
         }
 
         function loseLife() {
             lives--; updateHUD();
-            document.getElementById('flash').style.opacity = 1;
-            setTimeout(() => document.getElementById('flash').style.opacity = 0, 100);
-            if (lives <= 0) {
-                gameOver();
-            } else {
-                setTimeout(() => {
-                    if (gameState === 'playing') {
-                        currentChallengeIndex++; 
-                        updateHUD();
-                        spawnWave();
-                    }
-                }, 1000);
-            }
+            document.getElementById('flash').style.opacity = 1; setTimeout(() => document.getElementById('flash').style.opacity = 0, 100);
+            if (lives <= 0) gameOver();
+            else { setTimeout(() => { if (gameState === 'playing') { currentChallengeIndex++; updateHUD(); spawnWave(); } }, 1000); }
         }
 
         function updateHUD() {
@@ -427,76 +307,40 @@
 
         function showScreen(id) {
             document.querySelectorAll('.screen').forEach(s => { s.classList.remove('active'); s.classList.add('hidden'); });
-            const el = document.getElementById(id);
-            if(el) { el.classList.remove('hidden'); el.classList.add('active'); }
+            const el = document.getElementById(id); if(el) { el.classList.remove('hidden'); el.classList.add('active'); }
         }
 
         function startGame(mode) {
-            unlockAudio();
-            gameState = 'playing'; currentMode = mode; lives = 3; score = 0;
-            fruits = []; particles = []; splitFruits = []; splashes = [];
-            initChallenges(mode); updateHUD();
-            showScreen('hud'); document.getElementById('hud').style.display = 'flex';
+            unlockAudio(); gameState = 'playing'; currentMode = mode; lives = 3; score = 0; fruits = []; particles = []; splitFruits = []; splashes = [];
+            initChallenges(mode); updateHUD(); showScreen('hud'); document.getElementById('hud').style.display = 'flex';
             if (menuMusic) { menuMusic.pause(); menuMusic.currentTime = 0; }
             spawnWave();
         }
 
-        function gameOver() {
-            gameState = 'over'; document.getElementById('hud').style.display = 'none';
-            document.getElementById('over-correct').textContent = score;
-            showScreen('s-over'); if (menuMusic) menuMusic.play();
-        }
-
-        function winGame() {
-            gameState = 'win'; document.getElementById('hud').style.display = 'none';
-            showScreen('s-win'); if (menuMusic) menuMusic.play();
-            launchVictoryEffects();
-        }
+        function gameOver() { gameState = 'over'; document.getElementById('hud').style.display = 'none'; document.getElementById('over-correct').textContent = score; showScreen('s-over'); if (menuMusic) menuMusic.play(); }
+        function winGame() { gameState = 'win'; document.getElementById('hud').style.display = 'none'; showScreen('s-win'); if (menuMusic) menuMusic.play(); launchVictoryEffects(); }
 
         function launchVictoryEffects() {
             const box = document.getElementById('victory-box');
             for(let i=0; i<100; i++) {
-                const c = document.createElement('div');
-                c.className = 'confetti';
-                c.style.left = Math.random() * 100 + '%';
+                const c = document.createElement('div'); c.className = 'confetti'; c.style.left = Math.random() * 100 + '%';
                 c.style.backgroundColor = PALETTE[Math.floor(Math.random() * PALETTE.length)];
-                c.style.animationDelay = Math.random() * 3 + 's';
-                box.appendChild(c);
+                c.style.animationDelay = Math.random() * 3 + 's'; box.appendChild(c);
             }
         }
 
-        function checkSlice(p1, p2) {
-            fruits.forEach(f => {
-                if (f.sliced) return;
-                const dist = distToSegment({x: f.x, y: f.y}, p1, p2);
-                if (dist < f.radius * 1.3) sliceFruit(f);
-            });
-        }
+        function checkSlice(p1, p2) { fruits.forEach(f => { if (f.sliced) return; const dist = distToSegment({x: f.x, y: f.y}, p1, p2); if (dist < f.radius * 1.3) sliceFruit(f); }); }
         function distToSegment(p, v, w) {
-            const l2 = Math.pow(v.x - w.x, 2) + Math.pow(v.y - w.y, 2);
-            if (l2 === 0) return Math.sqrt(Math.pow(p.x - v.x, 2) + Math.pow(p.y - v.y, 2));
-            let t = ((p.x - v.x) * (w.x - v.x) + (p.y - v.y) * (w.y - v.y)) / l2;
-            t = Math.max(0, Math.min(1, t));
+            const l2 = Math.pow(v.x - w.x, 2) + Math.pow(v.y - w.y, 2); if (l2 === 0) return Math.sqrt(Math.pow(p.x - v.x, 2) + Math.pow(p.y - v.y, 2));
+            let t = Math.max(0, Math.min(1, ((p.x - v.x) * (w.x - v.x) + (p.y - v.y) * (w.y - v.y)) / l2));
             return Math.sqrt(Math.pow(p.x - (v.x + t * (w.x - v.x)), 2) + Math.pow(p.y - (v.y + t * (w.y - v.y)), 2));
         }
 
-        canvas.onmousedown = e => { isDrawing = true; lastPos = {x: e.clientX, y: e.clientY}; trails = [lastPos]; };
-        window.onmousemove = e => {
-            if (!isDrawing || gameState !== 'playing') return;
-            const cur = {x: e.clientX, y: e.clientY};
-            checkSlice(lastPos, cur); lastPos = cur;
-            trails.push(cur); if (trails.length > 20) trails.shift();
-        };
+        canvas.onmousedown = e => { unlockAudio(); isDrawing = true; lastPos = {x: e.clientX, y: e.clientY}; trails = [lastPos]; };
+        window.onmousemove = e => { if (!isDrawing || gameState !== 'playing') return; const cur = {x: e.clientX, y: e.clientY}; checkSlice(lastPos, cur); lastPos = cur; trails.push(cur); if (trails.length > 20) trails.shift(); };
         window.onmouseup = () => { isDrawing = false; trails = []; };
-
         canvas.ontouchstart = e => { unlockAudio(); const t = e.touches[0]; isDrawing = true; lastPos = {x: t.clientX, y: t.clientY}; trails = [lastPos]; };
-        canvas.ontouchmove = e => {
-            if (!isDrawing || gameState !== 'playing') return;
-            const t = e.touches[0]; const cur = {x: t.clientX, y: t.clientY};
-            checkSlice(lastPos, cur); lastPos = cur;
-            trails.push(cur); if (trails.length > 20) trails.shift();
-            e.preventDefault();
-        };
+        canvas.ontouchmove = e => { if (!isDrawing || gameState !== 'playing') return; const t = e.touches[0]; const cur = {x: t.clientX, y: t.clientY}; checkSlice(lastPos, cur); lastPos = cur; trails.push(cur); if (trails.length > 20) trails.shift(); e.preventDefault(); };
         canvas.ontouchend = () => { isDrawing = false; trails = []; };
 
         document.getElementById('btn-play').onclick = () => { unlockAudio(); showScreen('s-mode'); if (menuMusic) menuMusic.play().catch(()=>{}); };
@@ -510,27 +354,16 @@
         document.getElementById('btn-exit-game').onclick = () => { gameState='menu'; showScreen('s-menu'); document.getElementById('hud').style.display='none'; if (menuMusic) menuMusic.play(); };
 
         function loop() {
-            const bgGrad = ctx.createRadialGradient(width/2, height/2, 0, width/2, height/2, width);
-            bgGrad.addColorStop(0, '#1a1a1a');
-            bgGrad.addColorStop(1, '#050505');
-            ctx.fillStyle = bgGrad; ctx.fillRect(0, 0, width, height);
-
+            const bgGrad = ctx.createRadialGradient(width/2, height/2, 0, width/2, height/2, width); bgGrad.addColorStop(0, '#1a1a1a'); bgGrad.addColorStop(1, '#050505'); ctx.fillStyle = bgGrad; ctx.fillRect(0, 0, width, height);
             if (gameState === 'playing' || gameState === 'over' || gameState === 'win') {
                 splashes.forEach((s, i) => { s.update(); s.draw(); if (s.alpha <= 0) splashes.splice(i, 1); });
-                fruits.forEach((f, i) => {
-                    f.update(); f.draw();
-                    if (f.y > height + 250 && !f.sliced) {
-                        fruits.splice(i, 1);
-                        if (f.isTarget) loseLife();
-                    }
-                });
+                fruits.forEach((f, i) => { f.update(); f.draw(); if (f.y > height + 250 && !f.sliced) { fruits.splice(i, 1); if (f.isTarget) loseLife(); } });
                 particles.forEach((p, i) => { p.update(); p.draw(); if (p.alpha <= 0) particles.splice(i, 1); });
                 splitFruits.forEach((s, i) => { s.update(); s.draw(); if (s.alpha <= 0 || s.y > height + 250) splitFruits.splice(i, 1); });
                 if (trails.length > 1) {
                     ctx.beginPath(); ctx.strokeStyle = 'rgba(255, 255, 255, 0.9)'; ctx.lineWidth = 12; ctx.lineCap = 'round';
                     ctx.shadowColor = '#fff'; ctx.shadowBlur = 25;
-                    trails.forEach((t, i) => { if (i === 0) ctx.moveTo(t.x, t.y); else ctx.lineTo(t.x, t.y); });
-                    ctx.stroke(); ctx.shadowBlur = 0;
+                    trails.forEach((t, i) => { if (i === 0) ctx.moveTo(t.x, t.y); else ctx.lineTo(t.x, t.y); }); ctx.stroke(); ctx.shadowBlur = 0;
                 }
             }
             requestAnimationFrame(loop);
