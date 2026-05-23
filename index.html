@@ -130,14 +130,10 @@
     </div>
 
     <script>
-        // BACK TO ABSOLUTE PATHS - PROVEN TO WORK BEFORE
         const BASE_DIR = "D:/lighknight/abcVocals/";
-        const TRIM_DIR = BASE_DIR + "trimmed/";
-
         const MENU_SONG_PATH = BASE_DIR + "abc song.mp3";
         const SLICE_SOUND_PATH = BASE_DIR + "666herohero-slash-21834.mp3";
 
-        // Sound Mapping - Explicitly audit all group characters
         const SOUND_FILES = {
             'أ': 'ءا.m4a', 'ب': 'ب.m4a', 'ت': 'تا.m4a', 'ث': 'ثا.m4a', 'ج': 'جا.m4a', 
             'ح': 'حا.m4a', 'خ': 'خا.m4a', 'د': 'دا.m4a', 'ذ': 'ذا.m4a', 'ر': 'را.m4a', 
@@ -182,7 +178,6 @@
             { items: ['ث', 'ذ'] }, { items: ['م', 'ن'] }
         ];
 
-        // Global Audio Objects - Immediate initialization
         const menuMusic = new Audio(MENU_SONG_PATH); menuMusic.loop = true;
         const sliceSound = new Audio(SLICE_SOUND_PATH);
 
@@ -192,14 +187,12 @@
             console.log("[Audio Debug]", msg);
         }
 
-        // Canvas Setup
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
         let width, height;
         function resize() { width = window.innerWidth; height = window.innerHeight; canvas.width = width; canvas.height = height; }
         window.addEventListener('resize', resize); resize();
 
-        // Game Core
         let gameState = 'menu';
         let currentMode = 'ortho';
         let challenges = [];
@@ -287,7 +280,6 @@
         }
 
         function getAudioPath(char) {
-            // Insensitive to Tatweel (U+0640)
             const clean = char.replace(/\u0640/g, '');
             const filename = SOUND_FILES[char] || SOUND_FILES[clean] || (clean + ".m4a");
             return BASE_DIR + filename;
@@ -299,16 +291,10 @@
 
             const ch = challenges[currentChallengeIndex];
             const fullPath = getAudioPath(ch.target);
-            
             logAudio("Playing: " + ch.target);
             const audio = new Audio(fullPath);
-            
-            // Non-blocking playback to prevent game hang
-            audio.play().catch(e => {
-                logAudio("Error: " + ch.target + " (" + e.message + ")");
-            });
+            audio.play().catch(e => logAudio("Error: " + ch.target + " (" + e.message + ")"));
 
-            // Launch 1s after sound trigger
             setTimeout(() => {
                 if (gameState !== 'playing') return;
                 fruits = [];
@@ -316,12 +302,20 @@
                 let c2Idx = (c1Idx + 1 + Math.floor(Math.random() * (PALETTE.length - 1))) % PALETTE.length;
                 const color1 = PALETTE[c1Idx]; const color2 = PALETTE[c2Idx];
                 const isTargetLeft = Math.random() > 0.5;
+
+                // PHYSICS CALCULATION FOR PERFECT HEIGHT
+                const g = 0.22;
+                const startY = height + 150;
+                const targetPeakY = 80; // Peak just below top
+                const distance = startY - targetPeakY;
+                const perfectVY = -Math.sqrt(2 * g * distance); // v = sqrt(2gh)
+
                 const createFruit = (text, isLeft, color) => {
                     const x = isLeft ? width * 0.25 : width * 0.75;
-                    const vx = isLeft ? (Math.random() * 1 + 0.5) : -(Math.random() * 1 + 0.5);
-                    const vy = -(height * 0.026 + Math.random() * 4); 
-                    return new Fruit(text, x, height + 150, vx, vy, color);
+                    const vx = isLeft ? (Math.random() * 0.8 + 0.5) : -(Math.random() * 0.8 + 0.5);
+                    return new Fruit(text, x, startY, vx, perfectVY, color);
                 };
+
                 const f1 = createFruit(ch.target, isTargetLeft, color1); f1.isTarget = true;
                 const f2 = createFruit(ch.distractor, !isTargetLeft, color2);
                 fruits.push(f1, f2);
@@ -336,29 +330,16 @@
             splitFruits.push(new SplitFruit(fruit.text, fruit.x, fruit.y, fruit.vx - 4, fruit.vy, fruit.rotation, fruit.color, -1));
             splitFruits.push(new SplitFruit(fruit.text, fruit.x, fruit.y, fruit.vx + 4, fruit.vy, fruit.rotation, fruit.color, 1));
             for (let i = 0; i < 25; i++) particles.push(new Particle(fruit.x, fruit.y, fruit.color));
-            if (fruit.isTarget) {
-                score++; currentChallengeIndex++; updateHUD();
-                setTimeout(spawnWave, 1200);
-            } else {
-                loseLife();
-            }
+            if (fruit.isTarget) { score++; currentChallengeIndex++; updateHUD(); setTimeout(spawnWave, 1200); } 
+            else { loseLife(); }
         }
 
         function loseLife() {
             lives--; updateHUD();
             document.getElementById('flash').style.opacity = 1;
             setTimeout(() => document.getElementById('flash').style.opacity = 0, 100);
-            if (lives <= 0) {
-                gameOver();
-            } else {
-                setTimeout(() => {
-                    if (gameState === 'playing') {
-                        currentChallengeIndex++; 
-                        updateHUD();
-                        spawnWave();
-                    }
-                }, 1000);
-            }
+            if (lives <= 0) { gameOver(); } 
+            else { setTimeout(() => { if (gameState === 'playing') { currentChallengeIndex++; updateHUD(); spawnWave(); } }, 1000); }
         }
 
         function updateHUD() {
@@ -384,17 +365,8 @@
             spawnWave();
         }
 
-        function gameOver() {
-            gameState = 'over'; document.getElementById('hud').style.display = 'none';
-            document.getElementById('over-correct').textContent = score;
-            showScreen('s-over'); if (menuMusic) menuMusic.play();
-        }
-
-        function winGame() {
-            gameState = 'win'; document.getElementById('hud').style.display = 'none';
-            showScreen('s-win'); if (menuMusic) menuMusic.play();
-            launchVictoryEffects();
-        }
+        function gameOver() { gameState = 'over'; document.getElementById('hud').style.display = 'none'; document.getElementById('over-correct').textContent = score; showScreen('s-over'); if (menuMusic) menuMusic.play(); }
+        function winGame() { gameState = 'win'; document.getElementById('hud').style.display = 'none'; showScreen('s-win'); if (menuMusic) menuMusic.play(); launchVictoryEffects(); }
 
         function launchVictoryEffects() {
             const box = document.getElementById('victory-box');
@@ -442,10 +414,7 @@
         };
         canvas.ontouchend = () => { isDrawing = false; trails = []; };
 
-        document.getElementById('btn-play').onclick = () => { 
-            showScreen('s-mode'); 
-            menuMusic.play().catch(e => logAudio("Song Blocked: " + e.message)); 
-        };
+        document.getElementById('btn-play').onclick = () => { showScreen('s-mode'); menuMusic.play().catch(e => logAudio("Song Blocked: " + e.message)); };
         document.getElementById('btn-back-menu').onclick = () => showScreen('s-menu');
         document.getElementById('mode-ortho').onclick = () => startGame('ortho');
         document.getElementById('mode-phone').onclick = () => startGame('phone');
